@@ -45,6 +45,8 @@ document.addEventListener(
 
         initPageDots();
 
+        initPhotoLightbox();
+
         updateNavigation();
 
     }
@@ -908,6 +910,90 @@ if (
                 top: 0,
                 behavior: 'smooth'
             });
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   AMPLIAR POLAROIDS
+========================================================= */
+
+function initPhotoLightbox() {
+
+    const polaroids =
+        document.querySelectorAll('.polaroid');
+
+
+    polaroids.forEach(
+        (polaroid) => {
+
+            polaroid.addEventListener(
+                'click',
+                (event) => {
+
+                    event.stopPropagation();
+
+                    const lightbox =
+                        document.createElement('div');
+
+                    lightbox.className =
+                        'photo-lightbox';
+
+                    lightbox.setAttribute(
+                        'role',
+                        'dialog'
+                    );
+
+                    lightbox.setAttribute(
+                        'aria-label',
+                        'Foto ampliada'
+                    );
+
+                    lightbox.appendChild(
+                        polaroid.cloneNode(true)
+                    );
+
+                    lightbox.addEventListener(
+                        'click',
+                        () => lightbox.remove()
+                    );
+
+                    lightbox
+                        .querySelector('.polaroid')
+                        .addEventListener(
+                            'click',
+                            (photoEvent) => photoEvent.stopPropagation()
+                        );
+
+                    document.body.appendChild(
+                        lightbox
+                    );
+
+                    document.addEventListener(
+                        'keydown',
+                        function closeWithEscape(keyEvent) {
+
+                            if (
+                                keyEvent.key === 'Escape'
+                            ) {
+
+                                lightbox.remove();
+
+                                document.removeEventListener(
+                                    'keydown',
+                                    closeWithEscape
+                                );
+
+                            }
+
+                        }
+                    );
+
+                }
+            );
 
         }
     );

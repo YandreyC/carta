@@ -129,6 +129,8 @@ body {
 .book-container {
     position: relative;
 
+    animation: bookEntrance 0.9s ease both;
+
     width: 100%;
     max-width: 470px;
 
@@ -148,6 +150,8 @@ body {
 
 .book {
     position: relative;
+
+    perspective: 1200px;
 
     width: 100%;
     height: 100%;
@@ -178,7 +182,16 @@ body {
             transparent 90%,
             rgba(90,62,108,0.025)
         ),
+        radial-gradient(
+            rgba(90,62,108,0.045) 0.45px,
+            transparent 0.55px
+        ),
         var(--paper-light);
+
+    background-size:
+        auto,
+        5px 5px,
+        auto;
 
     padding: 16px;
 
@@ -212,6 +225,11 @@ body {
     pointer-events: auto;
 
     z-index: 10;
+}
+
+
+.page.active .page-border {
+    animation: pageContentEntrance 0.55s ease both;
 }
 
 
@@ -686,16 +704,13 @@ h3 {
 .polaroid-img {
     width: 100%;
 
-    height: 76px;
+    aspect-ratio: 4 / 3;
+
+    height: auto;
 
     overflow: hidden;
 
-    background:
-        linear-gradient(
-            135deg,
-            var(--purple-pastel),
-            #f1e8f0
-        );
+    background: var(--purple-pastel);
 
     border-radius: 2px;
 }
@@ -705,7 +720,7 @@ h3 {
     width: 100%;
     height: 100%;
 
-    object-fit: cover;
+    object-fit: contain;
 
     display: block;
 
@@ -716,6 +731,88 @@ h3 {
 
 .polaroid:hover img {
     transform: scale(1.05);
+}
+
+
+.photo-lightbox {
+    position: fixed;
+
+    inset: 0;
+
+    z-index: 10000;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    padding: 24px;
+
+    background: rgba(44,38,56,0.72);
+
+    animation: lightboxFade 0.25s ease;
+}
+
+
+.photo-lightbox .polaroid {
+    width: min(88vw, 390px);
+
+    max-height: 88vh;
+
+    padding: 10px 10px 16px;
+
+    transform: rotate(-1deg);
+
+    box-shadow: 0 18px 45px rgba(20,14,27,0.35);
+
+    animation: polaroidReveal 0.3s ease;
+}
+
+
+.photo-lightbox .polaroid-img {
+    aspect-ratio: 4 / 3;
+}
+
+
+.photo-lightbox .polaroid p {
+    font-size: 1.05rem;
+
+    margin-top: 10px;
+}
+
+
+.photo-lightbox .polaroid small {
+    font-size: 0.68rem;
+
+    line-height: 1.35;
+
+    margin-top: 4px;
+}
+
+
+@keyframes lightboxFade {
+
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+
+@keyframes polaroidReveal {
+
+    from {
+        opacity: 0;
+        transform: rotate(-1deg) scale(0.92);
+    }
+
+    to {
+        opacity: 1;
+        transform: rotate(-1deg) scale(1);
+    }
 }
 
 
@@ -1202,9 +1299,11 @@ h3 {
 .meeting-photo {
     width: 100%;
 
-    max-width: 220px;
+    max-width: 240px;
 
-    height: 120px;
+    aspect-ratio: 4 / 3;
+
+    height: auto;
 
     background: var(--purple-pastel);
 
@@ -1224,7 +1323,7 @@ h3 {
     width: 100%;
     height: 100%;
 
-    object-fit: cover;
+    object-fit: contain;
 
     display: block;
 }
@@ -1597,6 +1696,8 @@ h3 {
 .navigation-button {
     position: absolute;
 
+    display: none;
+
     top: 50%;
 
     transform: translateY(-50%);
@@ -1887,11 +1988,54 @@ h3 {
 
 
     .meeting-photo {
-        height: 90px;
+        max-width: 220px;
+
+        height: auto;
     }
 
 
     .timeline-item {
         margin-bottom: 7px;
+    }
+}
+
+
+@media (prefers-reduced-motion: reduce) {
+
+    *,
+    *::before,
+    *::after {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        scroll-behavior: auto !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+
+@keyframes bookEntrance {
+
+    from {
+        opacity: 0;
+        transform: translateY(14px) scale(0.98);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+
+@keyframes pageContentEntrance {
+
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
     }
 }
