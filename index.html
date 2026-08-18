@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nuestra Historia de Amor</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="book-container">
+        <nav class="bookmarks">
+            <button class="bookmark active" onclick="goToPage(0)" title="Portada">Portada</button>
+            <button class="bookmark" onclick="goToPage(1)" title="Capítulo 1">01</button>
+            <button class="bookmark" onclick="goToPage(2)" title="Capítulo 2">02</button>
+            <button class="bookmark" onclick="goToPage(3)" title="Capítulo 3">03</button>
+            <button class="bookmark" onclick="goToPage(4)" title="Capítulo 4">04</button>
+            <button class="bookmark" onclick="goToPage(5)" title="Contraportada">Fin</button>
+        </nav>
+
+        <div class="book" id="book">
+            
+            <section class="page active" id="page-0">
+                <div class="page-content cover-content">
+                    <span class="book-edition">Edición Especial • Vol. I</span>
+                    <h1 class="book-title">Nuestra Historia</h1>
+                    <p class="book-subtitle">Un capítulo a la vez</p>
+                    <div class="cover-ornament"></div>
+                    <span class="tap-hint">Toca la página para abrir →</span>
+                </div>
+            </section>
+
+            <section class="page" id="page-1">
+                <div class="page-content">
+                    <span class="chapter-number">Capítulo I</span>
+                    <h2>El tiempo a tu lado</h2>
+                    <p class="chapter-intro">Desde aquel instante en que nuestras historias se cruzaron, cada segundo ha valido la pena.</p>
+                    <div class="counter-box" id="love-counter">
+                        <div class="time-unit"><span id="days">00</span><label>Días</label></div>
+                        <div class="time-unit"><span id="hours">00</span><label>Horas</label></div>
+                        <div class="time-unit"><span id="minutes">00</span><label>Minutos</label></div>
+                        <div class="time-unit"><span id="seconds">00</span><label>Segundos</label></div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page" id="page-2">
+                <div class="page-content">
+                    <span class="chapter-number">Capítulo II</span>
+                    <h2>Galería de Recuerdos</h2>
+                    <div class="polaroid-grid">
+                        <div class="polaroid">
+                            <div class="polaroid-img placeholder-img"></div>
+                            <p>Nuestro primer gran momento</p>
+                        </div>
+                        <div class="polaroid">
+                            <div class="polaroid-img placeholder-img"></div>
+                            <p>Tu sonrisa favorita</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page" id="page-3">
+                <div class="page-content">
+                    <span class="chapter-number">Capítulo III</span>
+                    <h2>Banda Sonora</h2>
+                    <p class="chapter-intro">La melodía que suena en mi mente cada vez que pienso en ti.</p>
+                    <div class="soundtrack-card">
+                        <div class="vinyl-disc"></div>
+                        <div class="song-info">
+                            <h3>Nuestra Canción</h3>
+                            <p>Artista / Especial</p>
+                            <a href="https://spotify.com" target="_blank" class="song-link">Escuchar en Spotify</a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page" id="page-4">
+                <div class="page-content">
+                    <span class="chapter-number">Capítulo IV</span>
+                    <h2>Versos para Ti</h2>
+                    <div class="quote-bookmark">
+                        <p>"Te amaré como se ama a ciertas cosas oscuras, secretamente, entre la sombra y el alma."</p>
+                        <cite>— Pablo Neruda</cite>
+                    </div>
+                    <div class="quote-bookmark">
+                        <p>"En un mar de palabras, tú eres mi libro favorito."</p>
+                        <cite>— Para mi profesora favorita</cite>
+                    </div>
+                </div>
+            </section>
+
+            <section class="page" id="page-5">
+                <div class="page-content cover-content">
+                    <span class="book-edition">Fin del primer mes</span>
+                    <h2 class="book-title" style="font-size: 2rem;">Gracias por escribir esto conmigo</h2>
+                    <p class="book-subtitle" style="margin-bottom: 2rem;">Te amo infinitamente.</p>
+                    <button class="kiss-btn" id="kissBtn">Sellar con un beso 💋</button>
+                </div>
+            </section>
+
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,262 @@
+:root {
+    --bg-paper: #FBF9F5;
+    --text-main: #2C2638;
+    --purple-plum: #5A3E6C;
+    --purple-lavender: #9D85B2;
+    --purple-pastel: #E6DEF0;
+    --purple-accent: #7B5696;
+    --shadow-soft: 0 10px 30px rgba(90, 62, 108, 0.08);
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    background-color: var(--purple-pastel);
+    color: var(--text-main);
+    font-family: 'Montserrat', sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow: hidden;
+    padding: 10px;
+}
+
+.book-container {
+    position: relative;
+    width: 100%;
+    max-width: 480px;
+    height: 85vh;
+    max-height: 750px;
+    background-color: var(--bg-paper);
+    border-radius: 8px 16px 16px 8px;
+    box-shadow: var(--shadow-soft), inset -8px 0 20px rgba(0,0,0,0.03);
+    display: flex;
+    overflow: visible;
+    border: 1px solid #E3D9EC;
+}
+
+/* Marcapáginas laterales discretos */
+.bookmarks {
+    position: absolute;
+    right: -28px;
+    top: 40px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    z-index: 10;
+}
+
+.bookmark {
+    width: 32px;
+    height: 32px;
+    background-color: var(--purple-lavender);
+    border: none;
+    border-radius: 0 6px 6px 0;
+    color: white;
+    font-size: 0.75rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+}
+
+.bookmark.active, .bookmark:hover {
+    background-color: var(--purple-plum);
+    width: 38px;
+}
+
+/* --- EFECTO DE HOJA REALISTA Y LEVANTAMIENTO 3D --- */
+.book {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    perspective: 2000px; /* Perspectiva profunda para ver el volumen del giro */
+    overflow: hidden;
+    border-radius: 8px 16px 16px 8px;
+}
+
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: var(--bg-paper);
+    padding: 30px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    
+    /* Configuración de giro desde el lomo izquierdo */
+    transform-origin: left center;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.645, 0.045, 0.355, 1), box-shadow 0.8s ease;
+    
+    /* Estado inicial (oculta a la derecha) */
+    transform: rotateY(90deg);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* Página activa: totalmente abierta de frente */
+.page.active {
+    transform: rotateY(0deg);
+    opacity: 1;
+    pointer-events: auto;
+    z-index: 5;
+    box-shadow: inset 10px 0 20px rgba(0,0,0,0.04);
+}
+
+/* Página pasada: se levanta y gira completamente hacia la izquierda */
+.page.prev {
+    transform: rotateY(-180deg);
+    opacity: 0;
+    pointer-events: none;
+    z-index: 2;
+}
+
+/* Sombra dinámica en el lomo durante el giro para dar efecto de papel real */
+.page::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(0,0,0,0.08), transparent);
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+}
+
+.page.active::before {
+    opacity: 1;
+}
+
+.page-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    backface-visibility: hidden; /* Evita que se vea el contenido al revés */
+}
+
+/* Tipografía Editorial */
+h1, h2, h3 {
+    font-family: 'Cormorant Garamond', serif;
+    color: var(--purple-plum);
+}
+
+.book-edition {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: var(--purple-accent);
+    margin-bottom: 15px;
+}
+
+.book-title {
+    font-size: 2.8rem;
+    font-weight: 600;
+    line-height: 1.1;
+    margin-bottom: 10px;
+}
+
+.book-subtitle {
+    font-size: 1rem;
+    font-style: italic;
+    color: #665C74;
+}
+
+.chapter-number {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    letter-spacing: 3px;
+    color: var(--purple-accent);
+    margin-bottom: 8px;
+}
+
+.page-content h2 {
+    font-size: 2.2rem;
+    margin-bottom: 15px;
+}
+
+.chapter-intro {
+    font-size: 0.95rem;
+    line-height: 1.5;
+    color: #554D63;
+    margin-bottom: 25px;
+    max-width: 340px;
+}
+
+.tap-hint {
+    margin-top: 40px;
+    font-size: 0.75rem;
+    color: var(--purple-lavender);
+    font-style: italic;
+    animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+    0% { opacity: 0.5; }
+    50% { opacity: 1; }
+    100% { opacity: 0.5; }
+}
+
+/* Elementos del contador */
+.counter-box {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    width: 100%;
+    max-width: 280px;
+}
+
+.time-unit {
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(90, 62, 108, 0.05);
+    border: 1px solid var(--purple-pastel);
+}
+
+.time-unit span {
+    display: block;
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2rem;
+    font-weight: 600;
+    color: var(--purple-plum);
+}
+
+.time-unit label {
+    font-size: 0.75rem;
+    color: var(--purple-lavender);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Botón de la contraportada */
+.kiss-btn {
+    background-color: var(--purple-plum);
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    font-size: 0.95rem;
+    border-radius: 30px;
+    cursor: pointer;
+    font-family: 'Montserrat', sans-serif;
+    box-shadow: 0 4px 15px rgba(90, 62, 108, 0.2);
+    transition: background 0.3s;
+}
+
+.kiss-btn:hover {
+    background-color: var(--purple-accent);
+}
