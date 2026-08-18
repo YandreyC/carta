@@ -1,11 +1,11 @@
 :root {
-    --bg-paper: #FBF9F5;
+    --bg-paper: #FDFBF7;
     --text-main: #2C2638;
     --purple-plum: #5A3E6C;
     --purple-lavender: #9D85B2;
-    --purple-pastel: #E6DEF0;
+    --purple-pastel: #EAE3F2;
     --purple-accent: #7B5696;
-    --shadow-soft: 0 10px 30px rgba(90, 62, 108, 0.08);
+    --shadow-soft: 0 15px 35px rgba(90, 62, 108, 0.12);
 }
 
 * {
@@ -15,7 +15,7 @@
 }
 
 body {
-    background-color: var(--purple-pastel);
+    background: linear-gradient(135deg, #E6DEF0 0%, #D5C7E6 100%);
     color: var(--text-main);
     font-family: 'Montserrat', sans-serif;
     display: flex;
@@ -29,55 +29,57 @@ body {
 .book-container {
     position: relative;
     width: 100%;
-    max-width: 480px;
-    height: 85vh;
-    max-height: 750px;
+    max-width: 460px;
+    height: 88vh;
+    max-height: 780px;
     background-color: var(--bg-paper);
-    border-radius: 8px 16px 16px 8px;
-    box-shadow: var(--shadow-soft), inset -8px 0 20px rgba(0,0,0,0.03);
+    border-radius: 10px 20px 20px 10px;
+    box-shadow: var(--shadow-soft), inset -12px 0 30px rgba(90,62,108,0.04), inset 4px 0 10px rgba(0,0,0,0.02);
     display: flex;
     overflow: visible;
-    border: 1px solid #E3D9EC;
+    border: 1px solid #D8CCEC;
 }
 
-/* Marcapáginas laterales discretos */
+/* Marcapáginas laterales discretos con emojis */
 .bookmarks {
     position: absolute;
-    right: -28px;
-    top: 40px;
+    right: -32px;
+    top: 35px;
     display: flex;
     flex-direction: column;
-    gap: 8px;
+    gap: 10px;
     z-index: 10;
 }
 
 .bookmark {
-    width: 32px;
-    height: 32px;
+    width: 36px;
+    height: 36px;
     background-color: var(--purple-lavender);
     border: none;
-    border-radius: 0 6px 6px 0;
+    border-radius: 0 8px 8px 0;
     color: white;
-    font-size: 0.75rem;
-    font-weight: 600;
+    font-size: 0.85rem;
     cursor: pointer;
-    transition: all 0.3s ease;
-    box-shadow: 2px 2px 5px rgba(0,0,0,0.1);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 3px 3px 8px rgba(0,0,0,0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .bookmark.active, .bookmark:hover {
     background-color: var(--purple-plum);
-    width: 38px;
+    width: 44px;
+    box-shadow: 4px 4px 12px rgba(90,62,108,0.25);
 }
 
-/* --- EFECTO DE LECTOR DIGITAL MODERNO (FLUIDO TIPO APPLE BOOKS / KINDLE) --- */
+/* Estructura del libro y páginas */
 .book {
     position: relative;
     width: 100%;
     height: 100%;
     overflow: hidden;
-    border-radius: 8px 16px 16px 8px;
-    background-color: var(--bg-paper);
+    border-radius: 10px 20px 20px 10px;
 }
 
 .page {
@@ -87,20 +89,18 @@ body {
     width: 100%;
     height: 100%;
     background-color: var(--bg-paper);
-    padding: 30px 25px;
+    padding: 25px 20px;
     display: flex;
     flex-direction: column;
     justify-content: center;
     
-    /* Desplazamiento lateral suave y elegante */
     transform: translateX(100%);
     opacity: 0;
     pointer-events: none;
-    transition: transform 0.5s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease-in-out;
-    box-shadow: inset 15px 0 25px rgba(0,0,0,0.02);
+    transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.4s ease-in-out;
+    box-shadow: inset 20px 0 35px rgba(0,0,0,0.025);
 }
 
-/* Página activa (la que se está leyendo) */
 .page.active {
     transform: translateX(0);
     opacity: 1;
@@ -108,7 +108,6 @@ body {
     z-index: 5;
 }
 
-/* Página pasada (se desliza suavemente hacia la izquierda) */
 .page.prev {
     transform: translateX(-40%);
     opacity: 0;
@@ -125,80 +124,259 @@ body {
     text-align: center;
 }
 
-/* Tipografía Editorial */
+/* Marco decorativo interior de las páginas */
+.page-border {
+    width: 100%;
+    height: 100%;
+    border: 1px dashed var(--purple-lavender);
+    border-radius: 6px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+/* Tipografía Editorial Avanzada */
 h1, h2, h3 {
     font-family: 'Cormorant Garamond', serif;
     color: var(--purple-plum);
 }
 
 .book-edition {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     text-transform: uppercase;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     color: var(--purple-accent);
-    margin-bottom: 15px;
+    margin-bottom: 12px;
+    font-weight: 500;
 }
 
 .book-title {
-    font-size: 2.8rem;
+    font-size: 2.5rem;
     font-weight: 600;
     line-height: 1.1;
-    margin-bottom: 10px;
+    margin-bottom: 8px;
+}
+
+.book-title span {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3.2rem;
+    color: var(--purple-plum);
+    display: block;
+    font-weight: 400;
 }
 
 .book-subtitle {
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-style: italic;
-    color: #665C74;
+    color: #6C5E7E;
+    margin-top: 5px;
+}
+
+.cover-heart {
+    font-size: 1.8rem;
+    margin-top: 20px;
+    animation: floatHeart 3s ease-in-out infinite;
+}
+
+@keyframes floatHeart {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
 }
 
 .chapter-number {
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 3px;
     color: var(--purple-accent);
     margin-bottom: 8px;
+    font-weight: 600;
 }
 
 .page-content h2 {
-    font-size: 2.2rem;
-    margin-bottom: 15px;
+    font-size: 2rem;
+    margin-bottom: 12px;
 }
 
 .chapter-intro {
-    font-size: 0.95rem;
-    line-height: 1.5;
+    font-size: 0.9rem;
+    line-height: 1.6;
     color: #554D63;
-    margin-bottom: 25px;
-    max-width: 340px;
+    margin-bottom: 22px;
+    max-width: 320px;
 }
 
 .tap-hint {
-    margin-top: 40px;
-    font-size: 0.75rem;
+    margin-top: 25px;
+    font-size: 0.7rem;
     color: var(--purple-lavender);
     font-style: italic;
-    animation: pulse 2s infinite;
+    letter-spacing: 0.5px;
 }
 
-@keyframes pulse {
-    0% { opacity: 0.5; }
-    50% { opacity: 1; }
-    100% { opacity: 0.5; }
+/* --- ESTILO POLAROID MEJORADO --- */
+.polaroid-grid {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    width: 100%;
 }
 
-/* Elementos del contador */
+.polaroid {
+    background: white;
+    padding: 10px 10px 25px 10px;
+    box-shadow: 0 8px 20px rgba(90, 62, 108, 0.1);
+    border-radius: 4px;
+    width: 135px;
+    transform: rotate(-2deg);
+    transition: transform 0.3s;
+}
+
+.polaroid.p-2 {
+    transform: rotate(3deg);
+}
+
+.polaroid-img {
+    width: 100%;
+    height: 125px;
+    background-color: var(--purple-pastel);
+    border-radius: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    color: var(--purple-plum);
+}
+
+.polaroid p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.85rem;
+    margin-top: 10px;
+    color: var(--text-main);
+}
+
+/* --- BANDA SONORA Y VINILO ANIMADO --- */
+.soundtrack-card {
+    background: white;
+    padding: 18px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    box-shadow: 0 6px 20px rgba(90, 62, 108, 0.06);
+    border: 1px solid var(--purple-pastel);
+    width: 100%;
+    max-width: 330px;
+}
+
+.vinyl-disc {
+    width: 65px;
+    height: 65px;
+    background: #1A1A1A;
+    border-radius: 50%;
+    position: relative;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    animation: spinVinyl 6s linear infinite;
+    flex-shrink: 0;
+}
+
+.vinyl-disc::before {
+    content: '';
+    position: absolute;
+    width: 45px;
+    height: 45px;
+    border: 1px dashed rgba(255,255,255,0.3);
+    border-radius: 50%;
+}
+
+.vinyl-center {
+    width: 22px;
+    height: 22px;
+    background: var(--purple-plum);
+    border-radius: 50%;
+    border: 2px solid white;
+}
+
+@keyframes spinVinyl {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.song-info {
+    text-align: left;
+}
+
+.song-info h3 {
+    font-size: 1.1rem;
+    margin-bottom: 2px;
+}
+
+.song-info p {
+    font-size: 0.75rem;
+    color: #6C5E7E;
+    margin-bottom: 6px;
+}
+
+.song-link {
+    font-size: 0.75rem;
+    color: var(--purple-plum);
+    text-decoration: none;
+    font-weight: 600;
+}
+
+.song-link:hover {
+    text-decoration: underline;
+}
+
+/* --- CITAS LITERARIAS ESTILO MARCAPÁGINAS --- */
+.quote-bookmark {
+    background: white;
+    padding: 15px 18px;
+    border-radius: 8px;
+    border-left: 4px solid var(--purple-plum);
+    box-shadow: 0 4px 15px rgba(90, 62, 108, 0.05);
+    margin-bottom: 12px;
+    width: 100%;
+    max-width: 340px;
+    text-align: left;
+}
+
+.quote-bookmark p {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 0.95rem;
+    font-style: italic;
+    color: var(--text-main);
+    line-height: 1.4;
+    margin-bottom: 6px;
+}
+
+.quote-bookmark cite {
+    display: block;
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--purple-accent);
+    font-style: normal;
+    text-align: right;
+}
+
+/* --- CONTADOR --- */
 .counter-box {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 15px;
+    gap: 12px;
     width: 100%;
     max-width: 280px;
 }
 
 .time-unit {
     background: white;
-    padding: 15px;
+    padding: 12px;
     border-radius: 8px;
     box-shadow: 0 4px 15px rgba(90, 62, 108, 0.05);
     border: 1px solid var(--purple-pastel);
@@ -207,13 +385,13 @@ h1, h2, h3 {
 .time-unit span {
     display: block;
     font-family: 'Cormorant Garamond', serif;
-    font-size: 2rem;
+    font-size: 1.8rem;
     font-weight: 600;
     color: var(--purple-plum);
 }
 
 .time-unit label {
-    font-size: 0.75rem;
+    font-size: 0.7rem;
     color: var(--purple-lavender);
     text-transform: uppercase;
     letter-spacing: 1px;
@@ -225,7 +403,7 @@ h1, h2, h3 {
     color: white;
     border: none;
     padding: 12px 25px;
-    font-size: 0.95rem;
+    font-size: 0.9rem;
     border-radius: 30px;
     cursor: pointer;
     font-family: 'Montserrat', sans-serif;
