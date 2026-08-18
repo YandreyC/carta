@@ -1,125 +1,915 @@
-// --- CONFIGURACIÓN DE LA FECHA DE INICIO DE NOVIOS ---
-// Formato: (Año, Mes [0-11], Día, Hora, Minuto). Julio es 6.
-const startDate = new Date(2026, 6, 20, 0, 0, 0); 
+/* =========================================================
+   CONFIGURACIÓN
+========================================================= */
+
+// 20 de julio de 2026
+// Meses en JavaScript empiezan desde 0.
+// Julio = 6
+
+const startDate = new Date(
+    2026,
+    6,
+    20,
+    0,
+    0,
+    0
+);
+
+
+/* =========================================================
+   VARIABLES DEL LIBRO
+========================================================= */
 
 let currentPage = 0;
-const totalPages = 6;
 
-document.addEventListener('DOMContentLoaded', () => {
-    initBookNavigation();
-    initCounter();
-    initKissButton();
-});
+const pages = document.querySelectorAll('.page');
 
-// --- 1. NAVEGACIÓN FLUIDA TIPO LECTOR ---
+const totalPages = pages.length;
+
+
+/* =========================================================
+   INICIO
+========================================================= */
+
+document.addEventListener(
+    'DOMContentLoaded',
+    () => {
+
+        initBookNavigation();
+
+        initCounter();
+
+        initKissButton();
+
+        initSecret();
+
+        initPageDots();
+
+        updateNavigation();
+
+    }
+);
+
+
+/* =========================================================
+   NAVEGACIÓN
+========================================================= */
+
 function goToPage(pageIndex) {
-    if (pageIndex < 0 || pageIndex >= totalPages) return;
-    
-    const pages = document.querySelectorAll('.page');
-    
-    pages.forEach((page, index) => {
-        page.classList.remove('active', 'prev');
-        
-        if (index === pageIndex) {
-            page.classList.add('active');
-        } else if (index < pageIndex) {
-            page.classList.add('prev');
+
+    if (
+        pageIndex < 0 ||
+        pageIndex >= totalPages
+    ) {
+        return;
+    }
+
+
+    pages.forEach(
+        (page, index) => {
+
+            page.classList.remove(
+                'active',
+                'prev'
+            );
+
+
+            if (index === pageIndex) {
+
+                page.classList.add(
+                    'active'
+                );
+
+            }
+
+            else if (index < pageIndex) {
+
+                page.classList.add(
+                    'prev'
+                );
+
+            }
+
         }
-    });
+    );
+
 
     currentPage = pageIndex;
-    
-    // Actualizar marcapáginas activos
-    const bookmarks = document.querySelectorAll('.bookmark');
-    bookmarks.forEach((bm, index) => {
-        if (index === currentPage) {
-            bm.classList.add('active');
-        } else {
-            bm.classList.remove('active');
-        }
-    });
+
+
+    updateNavigation();
+
+    updatePageIndicator();
+
+    updatePageDots();
+
 }
+
+
+/* =========================================================
+   CLIC EN EL LIBRO
+========================================================= */
 
 function initBookNavigation() {
-    const bookContainer = document.getElementById('book');
 
-    bookContainer.addEventListener('click', (e) => {
-        if (e.target.tagName === 'A' || e.target.tagName === 'BUTTON') return;
+    const book =
+        document.getElementById('book');
 
-        const rect = bookContainer.getBoundingClientRect();
-        const clickX = e.clientX - rect.left;
-        const width = rect.width;
 
-        if (clickX > width / 2) {
-            if (currentPage < totalPages - 1) {
-                goToPage(currentPage + 1);
+    book.addEventListener(
+        'click',
+        (event) => {
+
+            /*
+             * Si se pulsa un botón,
+             * no cambiamos de página.
+             */
+
+            if (
+                event.target.closest(
+                    'button'
+                )
+            ) {
+                return;
             }
-        } else {
-            if (currentPage > 0) {
-                goToPage(currentPage - 1);
+
+
+            /*
+             * Si se pulsa un enlace,
+             * tampoco cambiamos.
+             */
+
+            if (
+                event.target.closest(
+                    'a'
+                )
+            ) {
+                return;
             }
+
+
+            const rect =
+                book.getBoundingClientRect();
+
+
+            const clickX =
+                event.clientX - rect.left;
+
+
+            const width =
+                rect.width;
+
+
+            if (
+                clickX > width / 2
+            ) {
+
+                nextPage();
+
+            }
+
+            else {
+
+                previousPage();
+
+            }
+
         }
-    });
+    );
+
+
+    /*
+     * Botones laterales
+     */
+
+    document
+        .getElementById('prevBtn')
+        .addEventListener(
+            'click',
+            previousPage
+        );
+
+
+    document
+        .getElementById('nextBtn')
+        .addEventListener(
+            'click',
+            nextPage
+        );
+
+
+    /*
+     * Teclado
+     */
+
+    document.addEventListener(
+        'keydown',
+        (event) => {
+
+            if (
+                event.key === 'ArrowRight'
+            ) {
+                nextPage();
+            }
+
+
+            if (
+                event.key === 'ArrowLeft'
+            ) {
+                previousPage();
+            }
+
+        }
+    );
+
+
+    /*
+     * Deslizamiento en celular
+     */
+
+    let touchStartX = 0;
+
+
+    book.addEventListener(
+        'touchstart',
+        (event) => {
+
+            touchStartX =
+                event.changedTouches[0].screenX;
+
+        },
+        {
+            passive: true
+        }
+    );
+
+
+    book.addEventListener(
+        'touchend',
+        (event) => {
+
+            const touchEndX =
+                event.changedTouches[0].screenX;
+
+
+            const difference =
+                touchStartX - touchEndX;
+
+
+            if (
+                Math.abs(difference) < 50
+            ) {
+                return;
+            }
+
+
+            if (
+                difference > 0
+            ) {
+
+                nextPage();
+
+            }
+
+            else {
+
+                previousPage();
+
+            }
+
+        },
+        {
+            passive: true
+        }
+    );
+
 }
 
-// --- 2. CONTADOR DE TIEMPO REAL ---
-function initCounter() {
-    updateCounter();
-    setInterval(updateCounter, 1000);
+
+/* =========================================================
+   SIGUIENTE / ANTERIOR
+========================================================= */
+
+function nextPage() {
+
+    if (
+        currentPage <
+        totalPages - 1
+    ) {
+
+        goToPage(
+            currentPage + 1
+        );
+
+    }
+
 }
+
+
+function previousPage() {
+
+    if (
+        currentPage > 0
+    ) {
+
+        goToPage(
+            currentPage - 1
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   CONTROLES DE NAVEGACIÓN
+========================================================= */
+
+function updateNavigation() {
+
+    const prevBtn =
+        document.getElementById(
+            'prevBtn'
+        );
+
+
+    const nextBtn =
+        document.getElementById(
+            'nextBtn'
+        );
+
+
+    /*
+     * Página anterior
+     */
+
+    if (
+        currentPage === 0
+    ) {
+
+        prevBtn.classList.add(
+            'disabled'
+        );
+
+    }
+
+    else {
+
+        prevBtn.classList.remove(
+            'disabled'
+        );
+
+    }
+
+
+    /*
+     * Página siguiente
+     */
+
+    if (
+        currentPage ===
+        totalPages - 1
+    ) {
+
+        nextBtn.classList.add(
+            'disabled'
+        );
+
+    }
+
+    else {
+
+        nextBtn.classList.remove(
+            'disabled'
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   INDICADOR DE PÁGINA
+========================================================= */
+
+function updatePageIndicator() {
+
+    const current =
+        document.getElementById(
+            'currentPage'
+        );
+
+
+    const total =
+        document.getElementById(
+            'totalPage'
+        );
+
+
+    current.innerText =
+        currentPage + 1;
+
+
+    total.innerText =
+        totalPages;
+
+}
+
+
+/* =========================================================
+   PUNTOS DE NAVEGACIÓN
+========================================================= */
+
+function initPageDots() {
+
+    const container =
+        document.getElementById(
+            'pageDots'
+        );
+
+
+    container.innerHTML = '';
+
+
+    pages.forEach(
+        (_, index) => {
+
+            const dot =
+                document.createElement(
+                    'span'
+                );
+
+
+            dot.classList.add(
+                'page-dot'
+            );
+
+
+            if (
+                index === currentPage
+            ) {
+
+                dot.classList.add(
+                    'active'
+                );
+
+            }
+
+
+            dot.addEventListener(
+                'click',
+                (event) => {
+
+                    event.stopPropagation();
+
+                    goToPage(index);
+
+                }
+            );
+
+
+            container.appendChild(
+                dot
+            );
+
+        }
+    );
+
+}
+
+
+function updatePageDots() {
+
+    const dots =
+        document.querySelectorAll(
+            '.page-dot'
+        );
+
+
+    dots.forEach(
+        (dot, index) => {
+
+            dot.classList.toggle(
+                'active',
+                index === currentPage
+            );
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   CONTADOR
+========================================================= */
+
+function initCounter() {
+
+    updateCounter();
+
+
+    setInterval(
+        updateCounter,
+        1000
+    );
+
+}
+
 
 function updateCounter() {
-    const now = new Date();
-    const difference = now - startDate;
 
-    if (difference < 0) return;
+    const now =
+        new Date();
 
-    const seconds = Math.floor(difference / 1000) % 60;
-    const minutes = Math.floor(difference / (1000 * 60)) % 60;
-    const hours = Math.floor(difference / (1000 * 60 * 60)) % 24;
-    const days = Math.floor(difference / (1000 * 60 * 60 * 24));
 
-    document.getElementById('days').innerText = String(days).padStart(2, '0');
-    document.getElementById('hours').innerText = String(hours).padStart(2, '0');
-    document.getElementById('minutes').innerText = String(minutes).padStart(2, '0');
-    document.getElementById('seconds').innerText = String(seconds).padStart(2, '0');
+    const difference =
+        now - startDate;
+
+
+    if (
+        difference < 0
+    ) {
+
+        return;
+
+    }
+
+
+    const seconds =
+        Math.floor(
+            difference / 1000
+        ) % 60;
+
+
+    const minutes =
+        Math.floor(
+            difference / (1000 * 60)
+        ) % 60;
+
+
+    const hours =
+        Math.floor(
+            difference / (1000 * 60 * 60)
+        ) % 24;
+
+
+    const days =
+        Math.floor(
+            difference /
+            (1000 * 60 * 60 * 24)
+        );
+
+
+    document.getElementById(
+        'days'
+    ).innerText =
+        String(days)
+        .padStart(2, '0');
+
+
+    document.getElementById(
+        'hours'
+    ).innerText =
+        String(hours)
+        .padStart(2, '0');
+
+
+    document.getElementById(
+        'minutes'
+    ).innerText =
+        String(minutes)
+        .padStart(2, '0');
+
+
+    document.getElementById(
+        'seconds'
+    ).innerText =
+        String(seconds)
+        .padStart(2, '0');
+
 }
 
-// --- 3. ANIMACIÓN DE BESOS / CONFETI ---
+
+/* =========================================================
+   SECRETO
+========================================================= */
+
+function initSecret() {
+
+    const secretBtn =
+        document.getElementById(
+            'secretBtn'
+        );
+
+
+    const intro =
+        document.getElementById(
+            'secret-intro'
+        );
+
+
+    const content =
+        document.getElementById(
+            'secret-content'
+        );
+
+
+    if (
+        !secretBtn
+    ) {
+        return;
+    }
+
+
+    secretBtn.addEventListener(
+        'click',
+        (event) => {
+
+            event.stopPropagation();
+
+
+            intro.classList.add(
+                'hidden'
+            );
+
+
+            content.classList.remove(
+                'hidden'
+            );
+
+
+            createSecretParticles();
+
+        }
+    );
+
+}
+
+
+/* =========================================================
+   BESOS / CONFETI
+========================================================= */
+
 function initKissButton() {
-    const kissBtn = document.getElementById('kissBtn');
-    if (!kissBtn) return;
 
-    kissBtn.addEventListener('click', () => {
-        createConfetti();
-    });
+    const kissBtn =
+        document.getElementById(
+            'kissBtn'
+        );
+
+
+    if (
+        !kissBtn
+    ) {
+
+        return;
+
+    }
+
+
+    kissBtn.addEventListener(
+        'click',
+        (event) => {
+
+            event.stopPropagation();
+
+
+            createConfetti();
+
+
+            kissBtn.innerText =
+                'Beso enviado 💋❤️';
+
+
+            kissBtn.disabled =
+                true;
+
+
+            const message =
+                document.getElementById(
+                    'kiss-message'
+                );
+
+
+            message.innerText =
+                'Espero que te haya llegado. ❤️';
+
+
+            setTimeout(
+                () => {
+
+                    message.innerText =
+                        'Nos vemos en el Volumen II...';
+
+                },
+                2500
+            );
+
+        }
+    );
+
 }
+
+
+/* =========================================================
+   CONFETI
+========================================================= */
 
 function createConfetti() {
-    const symbols = ['💋', '❤️', '✨', '💜', '🌸'];
-    const container = document.body;
 
-    for (let i = 0; i < 30; i++) {
-        const particle = document.createElement('div');
-        particle.innerText = symbols[Math.floor(Math.random() * symbols.length)];
-        particle.style.position = 'fixed';
-        particle.style.left = Math.random() * 100 + 'vw';
-        particle.style.top = '-5vh';
-        particle.style.fontSize = (Math.random() * 1.5 + 1) + 'rem';
-        particle.style.zIndex = '9999';
-        particle.style.transition = `all ${Math.random() * 2 + 2}s ease-in-out`;
-        particle.style.pointerEvents = 'none';
+    const symbols = [
+        '💋',
+        '❤️',
+        '✨',
+        '💜',
+        '🌸',
+        '💕'
+    ];
 
-        container.appendChild(particle);
 
-        setTimeout(() => {
-            particle.style.top = '105vh';
-            particle.style.transform = `rotate(${Math.random() * 360}deg)`;
-            particle.style.opacity = '0';
-        }, 50);
+    for (
+        let i = 0;
+        i < 45;
+        i++
+    ) {
 
-        setTimeout(() => {
-            particle.remove();
-        }, 4000);
+        const particle =
+            document.createElement(
+                'div'
+            );
+
+
+        particle.classList.add(
+            'love-particle'
+        );
+
+
+        particle.innerText =
+            symbols[
+                Math.floor(
+                    Math.random() *
+                    symbols.length
+                )
+            ];
+
+
+        particle.style.left =
+            Math.random() *
+            100 +
+            'vw';
+
+
+        particle.style.fontSize =
+            (
+                Math.random() *
+                1.3 +
+                0.8
+            ) +
+            'rem';
+
+
+        particle.style.animationDuration =
+            (
+                Math.random() *
+                2 +
+                2
+            ) +
+            's';
+
+
+        particle.style.animationDelay =
+            (
+                Math.random() *
+                0.7
+            ) +
+            's';
+
+
+        document.body.appendChild(
+            particle
+        );
+
+
+        setTimeout(
+            () => {
+
+                particle.remove();
+
+            },
+            5000
+        );
+
     }
+
+}
+
+
+/* =========================================================
+   PARTICULAS DEL SECRETO
+========================================================= */
+
+function createSecretParticles() {
+
+    const symbols = [
+        '💜',
+        '✨',
+        '😏',
+        '❤️'
+    ];
+
+
+    for (
+        let i = 0;
+        i < 12;
+        i++
+    ) {
+
+        const particle =
+            document.createElement(
+                'div'
+            );
+
+
+        particle.classList.add(
+            'love-particle'
+        );
+
+
+        particle.innerText =
+            symbols[
+                Math.floor(
+                    Math.random() *
+                    symbols.length
+                )
+            ];
+
+
+        particle.style.left =
+            (
+                30 +
+                Math.random() * 40
+            ) +
+            'vw';
+
+
+        particle.style.fontSize =
+            '1rem';
+
+
+        particle.style.animationDuration =
+            '3s';
+
+
+        document.body.appendChild(
+            particle
+        );
+
+
+        setTimeout(
+            () => {
+
+                particle.remove();
+
+            },
+            3500
+        );
+
+    }
+
+}
+
+
+/* =========================================================
+   VOLVER AL PRINCIPIO
+========================================================= */
+
+const restartBtn =
+    document.getElementById(
+        'restartBtn'
+    );
+
+
+if (
+    restartBtn
+) {
+
+    restartBtn.addEventListener(
+        'click',
+        (event) => {
+
+            event.stopPropagation();
+
+
+            goToPage(0);
+
+
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
+
+        }
+    );
+
 }
