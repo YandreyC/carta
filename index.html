@@ -4,29 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Nuestra Historia de Amor</title>
-    <!-- Google Fonts para un toque editorial profundo -->
+    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Great+Vibes&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
     <div class="book-container">
-        <!-- Marcapáginas de navegación lateral -->
-        <nav class="bookmarks">
-            <button class="bookmark active" onclick="goToPage(0)" title="Portada">📖</button>
-            <button class="bookmark" onclick="goToPage(1)" title="Capítulo 1">⏳</button>
-            <button class="bookmark" onclick="goToPage(2)" title="Capítulo 2">🖼️</button>
-            <button class="bookmark" onclick="goToPage(3)" title="Capítulo 3">🎵</button>
-            <button class="bookmark" onclick="goToPage(4)" title="Capítulo 4">✒️</button>
-            <button class="bookmark" onclick="goToPage(5)" title="Contraportada">💌</button>
-        </nav>
-
         <!-- Libro / Hojas -->
         <div class="book" id="book">
             
             <!-- PORTADA -->
             <section class="page active" id="page-0">
-                <div class="page-content cover-content">
+                <div class="page-content">
                     <div class="page-border">
                         <span class="book-edition">Primer Mes • Edición Especial</span>
                         <h1 class="book-title">Nuestra<br><span>Historia</span></h1>
@@ -40,77 +30,100 @@
             <!-- CAPÍTULO 1: CONTADOR -->
             <section class="page" id="page-1">
                 <div class="page-content">
-                    <span class="chapter-number">Capítulo I</span>
-                    <h2>El tiempo a tu lado</h2>
-                    <p class="chapter-intro">Desde aquel instante en que nuestros caminos se cruzaron, cada segundo a tu ritmo ha valido toda la eternidad.</p>
-                    <div class="counter-box" id="love-counter">
-                        <div class="time-unit"><span id="days">00</span><label>Días</label></div>
-                        <div class="time-unit"><span id="hours">00</span><label>Horas</label></div>
-                        <div class="time-unit"><span id="minutes">00</span><label>Minutos</label></div>
-                        <div class="time-unit"><span id="seconds">00</span><label>Segundos</label></div>
+                    <div class="page-border">
+                        <span class="chapter-number">Capítulo I ❦</span>
+                        <h2>El tiempo a tu lado</h2>
+                        <p class="chapter-intro">Desde aquel instante en que nuestros caminos se cruzaron, cada segundo a tu ritmo ha valido toda la eternidad.</p>
+                        <div class="counter-box" id="love-counter">
+                            <div class="time-unit"><span id="days">00</span><label>Días</label></div>
+                            <div class="time-unit"><span id="hours">00</span><label>Horas</label></div>
+                            <div class="time-unit"><span id="minutes">00</span><label>Minutos</label></div>
+                            <div class="time-unit"><span id="seconds">00</span><label>Segundos</label></div>
+                        </div>
                     </div>
                 </div>
             </section>
 
-            <!-- CAPÍTULO 2: ÁLBUM DE FOTOS -->
+            <!-- CAPÍTULO 2: ÁLBUM DE FOTOS (6 FOTOS EN 2 COLUMNAS) -->
             <section class="page" id="page-2">
                 <div class="page-content">
-                    <span class="chapter-number">Capítulo II</span>
-                    <h2>Galería de Recuerdos</h2>
-                    <div class="polaroid-grid">
-                        <div class="polaroid p-1">
-                            <div class="polaroid-img placeholder-img"><span>🌸</span></div>
-                            <p>Nuestro inicio</p>
-                        </div>
-                        <div class="polaroid p-2">
-                            <div class="polaroid-img placeholder-img"><span>✨</span></div>
-                            <p>Tu sonrisa</p>
+                    <div class="page-border album-border">
+                        <span class="chapter-number">Capítulo II ❦</span>
+                        <h2>Galería de Recuerdos</h2>
+                        <div class="polaroid-grid">
+                            <div class="polaroid p-1">
+                                <div class="polaroid-img"><span>🌸</span></div>
+                                <p>Nuestro inicio</p>
+                            </div>
+                            <div class="polaroid p-2">
+                                <div class="polaroid-img"><span>✨</span></div>
+                                <p>Tu sonrisa</p>
+                            </div>
+                            <div class="polaroid p-3">
+                                <div class="polaroid-img"><span>☕</span></div>
+                                <p>Citas juntos</p>
+                            </div>
+                            <div class="polaroid p-4">
+                                <div class="polaroid-img"><span>💫</span></div>
+                                <p>Momentos top</p>
+                            </div>
+                            <div class="polaroid p-1">
+                                <div class="polaroid-img"><span>🌙</span></div>
+                                <p>Noches largas</p>
+                            </div>
+                            <div class="polaroid p-2">
+                                <div class="polaroid-img"><span>💜</span></div>
+                                <p>Te amo</p>
+                            </div>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- CAPÍTULO 3: BANDA SONORA -->
+            <!-- CAPÍTULO 3: BANDA SONORA (REPRODUCTOR INCORPORADO) -->
             <section class="page" id="page-3">
                 <div class="page-content">
-                    <span class="chapter-number">Capítulo III</span>
-                    <h2>Banda Sonora</h2>
-                    <p class="chapter-intro">La melodía que resuena en mi mente cada vez que pienso en ti.</p>
-                    <div class="soundtrack-card">
-                        <div class="vinyl-disc">
-                            <div class="vinyl-center"></div>
-                        </div>
-                        <div class="song-info">
-                            <h3>Nuestra Canción</h3>
-                            <p>Melodía Especial</p>
-                            <a href="https://spotify.com" target="_blank" class="song-link">Escuchar en Spotify &rarr;</a>
+                    <div class="page-border">
+                        <span class="chapter-number">Capítulo III ❦</span>
+                        <h2>Banda Sonora</h2>
+                        <p class="chapter-intro" style="margin-bottom: 12px;">"Te amo y más... y un poco más que eso."</p>
+                        
+                        <!-- Reproductor de YouTube embebido -->
+                        <div class="video-container">
+                            <iframe width="100%" height="160" src="https://www.youtube.com/embed/p_1Osm5xE5Y" title="Te Amo y Más - Diego Luna" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen style="border-radius: 6px;"></iframe>
                         </div>
                     </div>
                 </div>
             </section>
 
-            <!-- CAPÍTULO 4: CITAS LITERARIAS -->
+            <!-- CAPÍTULO 4: VERSOS Y FRASES -->
             <section class="page" id="page-4">
                 <div class="page-content">
-                    <span class="chapter-number">Capítulo IV</span>
-                    <h2>Versos para Ti</h2>
-                    <div class="quote-bookmark">
-                        <p>"Te amaré como se ama a ciertas cosas oscuras, secretamente, entre la sombra y el alma."</p>
-                        <cite>— Pablo Neruda</cite>
-                    </div>
-                    <div class="quote-bookmark">
-                        <p>"En un mar infinito de palabras, tú siempre serás mi libro favorito."</p>
-                        <cite>— Para mi profesora favorita</cite>
+                    <div class="page-border">
+                        <span class="chapter-number">Capítulo IV ❦</span>
+                        <h2>Versos para Ti</h2>
+                        <div class="quote-bookmark">
+                            <p>"Te amaré como se ama a ciertas cosas oscuras, secretamente, entre la sombra y el alma."</p>
+                            <cite>— Pablo Neruda</cite>
+                        </div>
+                        <div class="quote-bookmark">
+                            <p>"En un mar infinito de palabras, tú siempre serás mi libro favorito y mi lectura más hermosa."</p>
+                            <cite>— Para ti</cite>
+                        </div>
+                        <div class="quote-bookmark">
+                            <p>"Y si el mundo fuera mudo, te hablaría con las manos; y si fuera ciego, te besaría con el alma."</p>
+                            <cite>— Extraordinaria</cite>
+                        </div>
                     </div>
                 </div>
             </section>
 
             <!-- CONTRAPORTADA -->
             <section class="page" id="page-5">
-                <div class="page-content cover-content">
+                <div class="page-content">
                     <div class="page-border">
                         <span class="book-edition">Fin del Volumen I</span>
-                        <h2 class="book-title" style="font-size: 2.2rem; margin-bottom: 5px;">Gracias por escribir esto conmigo</h2>
+                        <h2 class="book-title" style="font-size: 2rem; margin-bottom: 5px;">Gracias por escribir esto conmigo</h2>
                         <p class="book-subtitle" style="margin-bottom: 25px;">Te amo infinitamente.</p>
                         <button class="kiss-btn" id="kissBtn">Sellar con un beso 💋</button>
                     </div>
