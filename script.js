@@ -1,5 +1,6 @@
 // --- CONFIGURACIÓN DE LA FECHA DE INICIO DE NOVIOS ---
-const startDate = new Date(2026, 6, 18, 0, 0, 0); 
+// Formato: (Año, Mes [0-11], Día, Hora, Minuto). Julio es 6.
+const startDate = new Date(2026, 6, 20, 0, 0, 0); 
 
 let currentPage = 0;
 const totalPages = 6;
@@ -10,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     initKissButton();
 });
 
-// --- 1. NAVEGACIÓN CON ORDEN DE HOJAS EN Z-INDEX ---
+// --- 1. NAVEGACIÓN FLUIDA TIPO LECTOR ---
 function goToPage(pageIndex) {
     if (pageIndex < 0 || pageIndex >= totalPages) return;
     
@@ -21,14 +22,8 @@ function goToPage(pageIndex) {
         
         if (index === pageIndex) {
             page.classList.add('active');
-            page.style.zIndex = 5;
         } else if (index < pageIndex) {
-            page.classList.add('prev'); // Ya pasó, se queda del lado izquierdo
-            page.style.zIndex = index; // Se apilan en orden inverso debajo
-        } else {
-            // Aún no llega, espera del lado derecho
-            page.style.zIndex = totalPages - index;
-            page.style.transform = 'rotateY(90deg)';
+            page.classList.add('prev');
         }
     });
 
