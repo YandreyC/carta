@@ -47,6 +47,8 @@ document.addEventListener(
 
         initPhotoLightbox();
 
+        initFullscreen();
+
         updateNavigation();
 
     }
@@ -996,6 +998,102 @@ function initPhotoLightbox() {
             );
 
         }
+    );
+
+}
+
+
+/* =========================================================
+   PANTALLA COMPLETA
+========================================================= */
+
+function initFullscreen() {
+
+    const fullscreenBtn =
+        document.getElementById(
+            'fullscreenBtn'
+        );
+
+
+    if (!fullscreenBtn) {
+        return;
+    }
+
+
+    fullscreenBtn.addEventListener(
+        'click',
+        async () => {
+
+            try {
+
+                if (document.fullscreenElement) {
+
+                    await document.exitFullscreen();
+
+                }
+
+                else {
+
+                    await document.documentElement.requestFullscreen();
+
+                }
+
+            }
+
+            catch (error) {
+
+                fullscreenBtn.setAttribute(
+                    'aria-label',
+                    'La pantalla completa no está disponible'
+                );
+
+            }
+
+        }
+    );
+
+
+    document.addEventListener(
+        'fullscreenchange',
+        updateFullscreenButton
+    );
+
+
+    updateFullscreenButton();
+
+}
+
+
+function updateFullscreenButton() {
+
+    const fullscreenBtn =
+        document.getElementById(
+            'fullscreenBtn'
+        );
+
+
+    if (!fullscreenBtn) {
+        return;
+    }
+
+
+    const isFullscreen =
+        Boolean(document.fullscreenElement);
+
+
+    fullscreenBtn.setAttribute(
+        'aria-label',
+        isFullscreen
+            ? 'Salir de pantalla completa'
+            : 'Ver en pantalla completa'
+    );
+
+
+    fullscreenBtn.setAttribute(
+        'title',
+        isFullscreen
+            ? 'Salir de pantalla completa'
+            : 'Ver en pantalla completa'
     );
 
 }
